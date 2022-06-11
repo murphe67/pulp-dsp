@@ -159,8 +159,11 @@ void plp_mat_mult_i32p_xpulpv2(void *args) {
             for(j = 0; j < N; j++){
                 int32_t AVal = pSrcA[i * N + (j)];
 
-                sum0 = sum0 + AVal * pSrcB[j * O + (k * 2)];
-                sum1 = sum1 + AVal * pSrcB[j * O + (k * 2 + 1)]; 
+                int32_t BVal0 = pSrcB[j * O + (k * 2)];
+                int32_t BVal1 = pSrcB[j * O + (k * 2 + 1)];
+
+                sum0 = sum0 + AVal * BVal0;
+                sum1 = sum1 + AVal * BVal1; 
             }
             pDstC[i * O + k * 2] = sum0;
             pDstC[i * O + k * 2 + 1] = sum1;
@@ -177,8 +180,10 @@ void plp_mat_mult_i32p_xpulpv2(void *args) {
                 int32_t AVal0 = pSrcA[i * 2 * N + (j)];
                 int32_t AVal1 = pSrcA[i * 2 * N + N + (j)];
 
-                sum00 = sum00 + AVal0 * pSrcB[j * O + k];
-                sum10 = sum10 + AVal1 * pSrcB[j * O + k];
+                int32_t BVal = pSrcB[j * O + k];
+
+                sum00 = sum00 + AVal0 * BVal;
+                sum10 = sum10 + AVal1 * BVal;
             }
 
             pDstC[(i * 2) * O + k] = sum00;
@@ -189,7 +194,10 @@ void plp_mat_mult_i32p_xpulpv2(void *args) {
         if(i < M){
             int32_t sum = 0;
             for(j = 0; j < N; j++){
-                sum = sum + pSrcA[i * N + (j)]* pSrcB[j * O + k];
+                int32_t AVal = pSrcA[i * N + j];
+                int32_t BVal = pSrcB[j * O + k];
+
+                sum = sum + AVal * BVal;
             }
 
             pDstC[i * O + k] = sum;
